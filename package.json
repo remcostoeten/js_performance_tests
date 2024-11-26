@@ -1,0 +1,36 @@
+{
+  "name": "json-performance-analyzer",
+  "version": "1.0.0",
+  "description": "Performance analysis tool for JSON operations",
+  "main": "js/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "live-server --port=4000 --no-browser --host=localhost --wait=100",
+    "dev": "live-server --port=3000 --no-browser --host=localhost --watch=*.html,js/**/*.js,*.css --wait=100",
+    "test": "echo \"No tests specified\" && exit 0",
+    "test:performance": "jest performance.test.ts",
+    "test:memory": "node --expose-gc ./node_modules/.bin/jest memory.test.ts",
+    "test:data-structures": "jest dataStructures.test.ts"
+  },
+  "keywords": [
+    "json",
+    "performance",
+    "testing",
+    "analysis"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "@testing-library/dom": "^9.3.4",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "@types/testing-library__dom": "^7.5.0",
+    "@types/testing-library__jest-dom": "^5.14.9",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
+  }
+}
