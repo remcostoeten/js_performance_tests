@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Performance Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON Performance Analyzer</h1>
+            <p class="subtitle">Test JSON parsing and stringify performance with custom data sizes</p>
+        </header>
+
+        <div class="input-section">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="file">File Input</button>
+                <button class="tab-btn" data-tab="manual">Manual Input</button>
+            </div>
+            
+            <div class="tab-content active" id="file-input">
+                <div class="file-drop-zone">
+                    <input type="file" id="fileInput" accept=".json" class="file-input" />
+                    <div class="file-drop-content">
+                        <svg class="upload-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <span class="file-label">Drop JSON file here or click to upload</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="manual-input">
+                <div class="textarea-wrapper">
+                    <textarea id="jsonInput" placeholder="Paste your JSON here..."></textarea>
+                    <button id="validateJson" class="validate-btn">Validate JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div id="controlPanel">
+                <!-- Buttons will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <div class="output-section">
+            <div class="output-header">
+                <h2>Results</h2>
+                <div class="output-controls">
+                    <button id="copyBtn" class="icon-btn" title="Copy to clipboard">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                    <button id="clearBtn" class="icon-btn" title="Clear output">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="output-container">
+                <pre><code id="target">Results will appear here...</code></pre>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <details>
+                <summary>About Performance Metrics</summary>
+                <div class="info-content">
+                    <!-- Metrics info will be inserted here by JavaScript -->
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- Add sample data generator -->
+    <div class="sample-data">
+        <button id="generateSample" class="load-btn">Generate Sample Data</button>
+        <select id="sampleSize" class="sample-select">
+            <option value="100">100 items</option>
+            <option value="1000">1,000 items</option>
+            <option value="10000">10,000 items</option>
+            <option value="100000">100,000 items</option>
+        </select>
+    </div>
+
+    <script type="module">
+        // Import our modules
+        import { DataLoader } from './js/DataLoader.js';
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = new DataLoader();
+            
+            // Setup sample data generator
+            document.getElementById('generateSample').addEventListener('click', () => {
+                const size = parseInt(document.getElementById('sampleSize').value);
+                const sampleData = Array.from({ length: size }, (_, i) => ({
+                    id: i + 1,
+                    name: `Item ${i + 1}`,
+                    value: Math.random() * 1000,
+                    timestamp: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
+                    status: ['active', 'pending', 'completed'][Math.floor(Math.random() * 3)],
+                    metadata: {
+                        category: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
+                        priority: Math.floor(Math.random() * 5) + 1
+                    }
+                }));
+                
+                document.getElementById('jsonInput').value = JSON.stringify(sampleData, null, 2);
+                document.querySelector('[data-tab="manual"]').click();
+            });
+        });
+    </script>
+</body>
+</html>
